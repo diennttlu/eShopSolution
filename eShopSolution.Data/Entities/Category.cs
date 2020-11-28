@@ -19,6 +19,8 @@ namespace eShopSolution.Data.Entities
 
         public int? ParentId { get; set; }
 
+        public string SeoAlias { get; set; }
+
         public Status Status { get; set; }
 
         public ICollection<ProductCategory> ProductCategories { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eShopSolution.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -33,6 +34,8 @@ namespace eShopSolution.Data.Entities
         public DateTime DateModified { get; set; }
 
         public string SeoAlias { get; set; }
+
+        public Status Status { get; set; }
 
         public ICollection<ProductCategory> ProductCategories { get; set; }
 
