@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "Default": "Server=ADMIN;Database=EShopSolution;Trusted_Connection=True;"
+  }
+}
