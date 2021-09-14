@@ -14,6 +14,7 @@ namespace eShopSolution.Data.EntityFrameworkCores
         {
             base.OnModelCreating(builder);
             builder.ConfigureEShopSolution();
+            builder.Seed();
         }
         
         public DbSet<Product> Products { get; set; }
