@@ -77,6 +77,17 @@ namespace eShopSolution.Data.EntityFrameworkCores
                 e.Property(x => x.ViewCount).IsRequired().HasDefaultValue(0);
             });
 
+            builder.Entity<ProductImage>(e =>
+            {
+                e.ToTable("ProductImages");
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Id).UseIdentityColumn();
+                e.Property(x => x.ImagePath).HasMaxLength(200).IsRequired();
+                e.Property(x => x.Caption).HasMaxLength(200);
+
+                e.HasOne(x => x.Product).WithMany(x => x.ProductImages).HasForeignKey(x => x.ProductId);
+            });
+
             builder.Entity<Cart>(e =>
             {
                 e.ToTable("Carts");
@@ -146,9 +157,7 @@ namespace eShopSolution.Data.EntityFrameworkCores
                 e.ToTable("Orders");
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Id).UseIdentityColumn();
-                
-                e.Property(x => x.OrderDate).HasDefaultValue(DateTime.Now);
-                
+
                 e.Property(x => x.ShipEmail).IsRequired().IsUnicode(false).HasMaxLength(50);
                 
                 e.Property(x => x.ShipAddress).IsRequired().HasMaxLength(200);
