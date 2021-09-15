@@ -1,5 +1,6 @@
 ﻿using eShopSolution.Data.Entities;
 using eShopSolution.Data.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,50 @@ namespace eShopSolution.Data.EntityFrameworkCores
     {
         public static void ConfigureEShopSolution(this ModelBuilder builder)
         {
+            builder.Entity<AppUser>(e =>
+            {
+                e.ToTable("AppUsers");
+
+                e.Property(x => x.FirstName).IsRequired().HasMaxLength(200);
+                e.Property(x => x.LastName).IsRequired().HasMaxLength(200);
+                e.Property(x => x.DateOfBirth).IsRequired();
+            });
+
+            builder.Entity<IdentityUserClaim<Guid>>(e =>
+            {
+                e.ToTable("AppUserClaims");
+            });
+
+            builder.Entity<IdentityUserRole<Guid>>(e =>
+            {
+                e.ToTable("AppUserRoles");
+                e.HasKey(x => new { x.UserId, x.RoleId });
+            });
+
+            builder.Entity<IdentityUserLogin<Guid>>(e =>
+            {
+                e.ToTable("AppUserLogins");
+                e.HasKey(x => x.UserId);
+            });
+
+            builder.Entity<IdentityRoleClaim<Guid>>(e =>
+            {
+                e.ToTable("AppRoleClaims");
+            });
+
+            builder.Entity<IdentityUserToken<Guid>>(e =>
+            {
+                e.ToTable("AppUserTokens");
+                e.HasKey(x => x.UserId);
+            });
+
+            builder.Entity<AppRole>(e =>
+            {
+                e.ToTable("AppRoles");
+
+                e.Property(x => x.Description).HasMaxLength(200).IsRequired();
+            });
+
             builder.Entity<AppConfig>(e =>
             {
                 e.ToTable("AppConfigs");
@@ -39,6 +84,7 @@ namespace eShopSolution.Data.EntityFrameworkCores
                 e.Property(x => x.Id).UseIdentityColumn();
 
                 e.HasOne(x => x.Product).WithMany(x => x.Carts).HasForeignKey(x => x.ProductId);
+                e.HasOne(x => x.AppUser).WithMany(x => x.Carts).HasForeignKey(x => x.UserId);
             });
 
             builder.Entity<Category>(e =>
@@ -110,6 +156,8 @@ namespace eShopSolution.Data.EntityFrameworkCores
                 e.Property(x => x.ShipName).IsRequired().HasMaxLength(200);
 
                 e.Property(x => x.ShipPhoneNumber).IsRequired().HasMaxLength(200);
+
+                e.HasOne(x => x.AppUser).WithMany(x => x.Orders).HasForeignKey(x => x.UserId);
             });
 
             builder.Entity<OrderDetail>(e =>
@@ -167,6 +215,8 @@ namespace eShopSolution.Data.EntityFrameworkCores
                 e.ToTable("Transactions");
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Id).UseIdentityColumn();
+
+                e.HasOne(x => x.AppUser).WithMany(x => x.Transactions).HasForeignKey(x => x.UserId);
             });
         }
     }
