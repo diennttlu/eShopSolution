@@ -1,9 +1,11 @@
 ﻿using eShopSolution.Data.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace eShopSolution.Data.EntityFrameworkCores
 {
-    public class EShopSolutionDbContext : DbContext
+    public class EShopSolutionDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
         public EShopSolutionDbContext(DbContextOptions options) : base(options)
         {
