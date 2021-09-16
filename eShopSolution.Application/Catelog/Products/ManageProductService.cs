@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using eShopSolution.Application.Common;
 using eShopSolution.ViewModels.Catelog.ProductImages;
+using System.Net.Http.Headers;
 
 namespace eShopSolution.Application.Catelog.Products
 {
@@ -199,7 +200,7 @@ namespace eShopSolution.Application.Catelog.Products
 
         private async Task<string> SaveFile(IFormFile file)
         {
-            var originalFileName = System.Net.Http.Headers.ContentDispositionHeaderValue
+            var originalFileName = ContentDispositionHeaderValue
                 .Parse(file.ContentDisposition)
                 .FileName
                 .Trim('"');

@@ -1,8 +1,11 @@
 using eShopSolution.Application.Catelog.Products;
 using eShopSolution.Application.Common;
+using eShopSolution.Application.System.Users;
+using eShopSolution.Data.Entities;
 using eShopSolution.Data.EntityFrameworkCores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,9 +29,19 @@ namespace eShopSolution.BackendApi
             services.AddDbContext<EShopSolutionDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
+            services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<EShopSolutionDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IPublicProductService, PublicProductService>();
             services.AddTransient<IManageProductService, ManageProductService>();
+
+            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+
+            services.AddTransient<IUserService, UserService>();
 
             services.AddControllersWithViews();
             services.AddSwaggerGen(c =>
@@ -57,7 +70,7 @@ namespace eShopSolution.BackendApi
 
             app.UseAuthorization();
             app.UseSwagger();
-            app.UseSwaggerUI(c => 
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eShopSolution V1");
             });
