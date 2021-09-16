@@ -9,6 +9,6 @@ namespace eShopSolution.Application.Catelog.Products
     {
         Task<PagedResult<ProductViewModel>> GetAllByCategoryIdAsync(GetPublicProductPagingRequest request);
 
-        Task<List<ProductViewModel>> GetAllAsync();
+        Task<List<ProductViewModel>> GetAllAsync(string languageId);
     }
 }

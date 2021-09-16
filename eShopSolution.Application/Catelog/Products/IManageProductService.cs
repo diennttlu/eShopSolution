@@ -1,4 +1,5 @@
-﻿using eShopSolution.ViewModels.Catelog.Products;
+﻿using eShopSolution.ViewModels.Catelog.ProductImages;
+using eShopSolution.ViewModels.Catelog.Products;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
@@ -22,10 +23,16 @@ namespace eShopSolution.Application.Catelog.Products
 
         Task<PagedResult<ProductViewModel>> GetAllPagingAsync(GetManageProductPagingRequest request);
 
-        Task<int> AddImages(int productId, List<IFormFile> files);
+        Task<ProductViewModel> GetByIdAsync(int productId, string languageId);
 
-        Task<int> RemoveImage(int imageId);
+        Task<int> AddImageAsync(int productId, ProductImageCreateRequest request);
 
-        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
+        Task<int> RemoveImageAsync(int imageId);
+
+        Task<int> UpdateImageAsync(int imageId, ProductImageUpdateRequest request);
+
+        Task<ProductImageViewModel> GetImageByIdAsync(int imageId);
+
+        Task<List<ProductImageViewModel>> GetImages(int productId);
     }
 }
