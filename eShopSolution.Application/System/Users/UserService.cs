@@ -1,5 +1,4 @@
 ﻿using eShopSolution.Data.Entities;
-using eShopSolution.Shared.Exceptions;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -45,6 +44,7 @@ namespace eShopSolution.Application.System.Users
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.GivenName, user.FirstName),
                     new Claim(ClaimTypes.Role, string.Join(";", roles)),
+                    new Claim(ClaimTypes.Name, user.UserName),
                 };
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
                 var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -52,7 +52,7 @@ namespace eShopSolution.Application.System.Users
                     _config["Tokens:Issuer"],
                     _config["Tokens:Issuer"],
                     claims,
-                    DateTime.Now.AddHours(24),
+                    expires: DateTime.Now.AddHours(3),
                     signingCredentials: credentials);
                 return new JwtSecurityTokenHandler().WriteToken(token);
             }

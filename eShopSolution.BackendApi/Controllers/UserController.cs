@@ -19,7 +19,7 @@ namespace eShopSolution.BackendApi.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> LoginAsync([FromForm] LoginRequest request)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -27,7 +27,7 @@ namespace eShopSolution.BackendApi.Controllers
             var resultToken = await _userService.AuthencateAsync(request);
             if (!string.IsNullOrEmpty(resultToken))
             {
-                return Ok(new { token = resultToken });
+                return Ok(resultToken);
             }
 
             return BadRequest("Username or password is incorrect!");
